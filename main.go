@@ -3,11 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"go-task-1/internal/model"
+	"go-task-kasir/internal/model"
 	"net/http"
 	"strconv"
 	"strings"
-	
 	//"model/categories"
 )
 
@@ -27,7 +26,7 @@ func main() {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
 	})
-	
+
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{
@@ -36,9 +35,9 @@ func main() {
 		})
 	})
 	fmt.Println("Server is running in :8080")
-	
+
 	err := http.ListenAndServe(":8080", nil)
-	
+
 	if err != nil {
 		fmt.Println("Error running server:", err)
 	}
@@ -56,7 +55,7 @@ func getCategoriesByID(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid category ID", http.StatusBadRequest)
 		return
 	}
-	
+
 	for _, category := range model.Categories {
 		if category.ID == id {
 			w.Header().Set("Content-Type", "application/json")
@@ -73,10 +72,10 @@ func createCategory(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
 		return
 	}
-	
+
 	newCategory.ID = len(model.Categories) + 1
 	model.Categories = append(model.Categories, newCategory)
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(newCategory)

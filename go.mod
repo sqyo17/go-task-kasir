@@ -1,3 +1,3 @@
-module go-task-1
+module go-task-kasir
 
 go 1.23.2
